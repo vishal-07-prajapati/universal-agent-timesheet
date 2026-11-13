@@ -1,0 +1,12 @@
+# Universal Timesheet / EMS Generator Rules
+# When the user asks for timesheet, daily EMS entries, or runs /ems:
+
+1. Check if configured by running:
+   python ems_cli.py --today
+
+2. If not configured, guide the user through the initial setup:
+   - Ask for their preferred format sample (e.g. Tab-separated EMS, Jira bullets, or custom).
+   - Ask for character limit constraints (e.g. < 700 chars).
+   - Ask if they want an end-of-day scheduled automation configured.
+
+3. Output the generated entries inside a clean markdown codeblock ready to paste into EMS.

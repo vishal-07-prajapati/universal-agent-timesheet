@@ -1,71 +1,82 @@
-# Antigravity EMS / Timesheet Generator
+# Universal Agent Timesheet & EMS Generator
 
-A customizable skill and plugin for Google Antigravity that transforms your daily agent conversations and development activity into clean, compliant timesheet / EMS task entries.
+A universal, agent-agnostic tool, MCP server, and skill that automatically converts daily AI coding sessions, conversation history, and git activity into clean, compliant daily EMS / timesheet entries.
+
+Designed to work across **any AI agent**:
+- **Google Antigravity** (Skills, Plugins, Scheduled Automations)
+- **Claude Code** (Slash Commands, Plugins, MCP)
+- **Cursor & Windsurf** (MCP Server, Agent Rules)
+- **Cline & Roo Code** (MCP Server)
+- **Standalone Terminal / Shell** (CLI)
 
 ---
 
 ## Key Features
 
-1. **First-Time Interactive Onboarding**:
-   - Asks the user to provide 1-2 sample entries matching their preferred style or choose from built-in presets (Tab-separated EMS, Ticket Bullets, Markdown Table).
-   - Configures custom formatting constraints (e.g., character limits, non-technical summaries, required fields).
-   - Inquires if the user wants an automated end-of-day summary generated automatically.
-
-2. **Automated Context Parsing**:
-   - Analyzes conversation transcripts to extract ticket numbers, root cause summaries, investigated files, and solutions.
-   - Enforces strict character limits (e.g. `< 700 characters`) and consistent formatting.
-
-3. **End-of-Day Scheduled Automation**:
-   - Integrates with Antigravity's scheduled sidecars to summarize tasks at your chosen end-of-day time (e.g., 6:30 PM local time).
-
----
-
-## Repository Structure
-
-```text
-antigravity-ems/
-├── plugin.json                           # Antigravity plugin manifest
-├── config/
-│   └── default-config.json               # Default formatting templates and presets
-├── skills/
-│   └── ems/
-│       ├── SKILL.md                      # Skill definition and execution workflow
-│       └── scripts/
-│           ├── setup_wizard.py           # Onboarding & configuration manager
-│           └── extract_context.py        # Transcript & ticket parser
-└── sidecars/
-    └── daily-ems-summary/
-        └── sidecar.json.template         # Scheduled automation template
-```
+1. **First-Time Interactive Setup**:
+   - Asks the user to choose their preferred timesheet format or paste their own sample.
+   - Enforces character constraints (e.g., strictly `< 700 characters` per entry for EMS).
+   - Configures end-of-day scheduled automations.
+2. **Universal MCP Server**:
+   - Zero-dependency Model Context Protocol server (`mcp/server.py`) using pure Python standard libraries.
+3. **Multi-Agent Integrations**:
+   - Works via slash commands (`/ems`), MCP tool calls (`generate_timesheet`, `setup_preferences`), or terminal CLI (`python ems_cli.py --today`).
+4. **Automated Context Parsing**:
+   - Automatically extracts ticket numbers, root cause summaries, investigated files, and fixes from conversation transcripts and Git commits.
 
 ---
 
-## Installation
+## Supported Agent Integrations
 
-### Method 1: Global Plugin (Recommended)
-
-Clone this repository directly into your Antigravity global plugins directory:
-
+### 1. Google Antigravity
+Clone directly into your Antigravity global plugins directory:
 ```bash
-git clone https://github.com/<your-username>/antigravity-ems.git ~/.gemini/config/plugins/ems
+git clone https://github.com/vishal-07-prajapati/universal-agent-timesheet.git ~/.gemini/config/plugins/ems
 ```
+* **Usage**: Type `/ems` or `/ems today` in any chat session.
 
-### Method 2: Project-Scoped Customization
-
-Clone into your repository's `.agents` directory:
-
+### 2. Claude Code
+Add as an MCP server:
 ```bash
-git clone https://github.com/<your-username>/antigravity-ems.git <your-project-root>/.agents/plugins/ems
+claude mcp add universal-timesheet python /path/to/universal-agent-timesheet/mcp/server.py
+```
+Or copy `.claude/commands/ems.md` into your project's `.claude/commands/`.
+* **Usage**: Type `/ems` in Claude Code.
+
+### 3. Cursor & Windsurf
+Add to your Cursor / Windsurf MCP configuration (`mcp_config.json`):
+```json
+{
+  "mcpServers": {
+    "universal-timesheet": {
+      "command": "python",
+      "args": ["/path/to/universal-agent-timesheet/mcp/server.py"]
+    }
+  }
+}
+```
+* **Usage**: Ask the agent in chat: *"Generate my timesheet entry for today"* or *"Run /ems"*.
+
+### 4. Standalone CLI (Terminal)
+Works directly from any shell without needing an AI agent open:
+```bash
+# First-time interactive setup
+python ems_cli.py --setup
+
+# Generate entries for today's tasks
+python ems_cli.py --today
+
+# Generate entries for yesterday's tasks
+python ems_cli.py --yesterday
 ```
 
 ---
 
-## Usage
+## First-Time User Experience
 
-* **First Run**: Type `/ems` in chat. The agent will detect that you haven't set up your preferences yet and will ask you for your sample entries, constraints, and daily automation preference.
-* **Daily Generation**:
-  - `/ems` or `/ems today`: Generates entries for today's active tasks.
-  - `/ems <conversation-id>`: Generates an entry for a specific conversation.
-  - `/ems yesterday`: Generates entries for yesterday's tasks.
-* **Reconfigure**:
-  - `/ems setup`: Re-runs the onboarding interview to update your preferred format, samples, or schedule.
+On the very first run, the tool prompts the user with 3 questions:
+1. **Format Sample**: Choose between Tab-Separated EMS, Ticket Bullets, Markdown Table, or paste a custom sample.
+2. **Limits**: Set max character limits (default: 700) and default client/project name.
+3. **Daily Automation**: Option to set up an end-of-day scheduled task (e.g. 6:30 PM local time).
+
+Preferences are persisted to `~/.gemini/config/ems-user-config.json` and can be updated anytime with `python ems_cli.py --setup` or `/ems setup`.
