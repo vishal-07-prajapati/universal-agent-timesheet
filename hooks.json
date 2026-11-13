@@ -1,0 +1,11 @@
+{
+  "ems-tracker": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "python \"C:\\Users\\vishal.prajapati\\.gemini\\config\\skills\\ems\\scripts\\track_task.py\"",
+        "timeout": 5
+      }
+    ]
+  }
+}
