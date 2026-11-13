@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "configured": false,
+  "style": "tab-separated",
+  "template": "[Client]\t[Module]\t[Type]\t[Task Title]\n- [Bullet 1]\n- [Bullet 2]\n- [Bullet 3]\t[Est]\t[Actual]\t\t[Status]\t[Approval]",
+  "sample": "CE21\t\tDevelopment\t13519602243: Invoices Duplicated on Statements\n- Investigated issue where invoices were duplicated on statements.\n- Analyzed stored procedures to locate redundant table joins.\n- Formulated database fix using distinct evaluation.\t04:00\t04:00\t\tCompleted\tPending",
+  "max_characters": 700,
+  "default_client": "CE21",
+  "default_hours": "04:00",
+  "tone": "concise, non-technical, professional",
+  "bullets_count": "4-5",
+  "automation": {
+    "enabled": false,
+    "time": "18:30",
+    "timezone": "Asia/Kolkata",
+    "cron": "CRON_TZ=Asia/Kolkata 30 18 * * *"
+  }
+}

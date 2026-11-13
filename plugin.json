@@ -1,0 +1,22 @@
+{
+  "name": "antigravity-ems",
+  "displayName": "Antigravity EMS / Timesheet Generator",
+  "version": "1.0.0",
+  "description": "Smart daily EMS / Timesheet task entry generator with interactive onboarding, custom formatting templates, and automated end-of-day scheduling.",
+  "author": "Vishal Prajapati",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vishalprajapati/antigravity-ems"
+  },
+  "keywords": [
+    "timesheet",
+    "ems",
+    "automation",
+    "work-log",
+    "daily-standup",
+    "antigravity"
+  ],
+  "skills": [
+    "skills/ems"
+  ]
+}

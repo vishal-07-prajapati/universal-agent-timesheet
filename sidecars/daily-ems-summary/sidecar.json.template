@@ -1,0 +1,20 @@
+{
+  "builtin": "schedule",
+  "args": [
+    "CRON_TZ={{TIMEZONE}} {{MINUTE}} {{HOUR}} * * *",
+    "agentapi",
+    "new-conversation",
+    "--",
+    "Run python \"{{EXTRACT_SCRIPT_PATH}}\" today to inspect today's Antigravity tasks and conversations, then generate the daily EMS timesheet entries following the ems skill in tab-separated format under 700 characters per entry."
+  ],
+  "restart_policy": "always",
+  "display_name": "Daily EMS Summary",
+  "description": "Every day at {{TIME}} ({{TIMEZONE}}), inspects today's Antigravity tasks and generates daily EMS timesheet entries.",
+  "agent_permissions": {
+    "access_grants": [
+      "command(python \"{{EXTRACT_SCRIPT_PATH}}\" today)",
+      "command(python)",
+      "read_file(C:\\Users\\vishal.prajapati\\.gemini\\antigravity\\brain)"
+    ]
+  }
+}
